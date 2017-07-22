@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 #include <ctype.h>
-#include <functional>
 
 std::string removeMentions(std::string content);
 void scan(std::string& content, const unsigned long i, const unsigned long oldi, const int frontSize);
