@@ -14,15 +14,17 @@ int main(){
 }
 
 std::string removeMentions(std::string content){
-  unsigned long i;
-  unsigned long oldi;
-  for(i = content.size() - 22, oldi = i + 1; i < oldi; i = std::min(i - 1, content.size() - 22)){
-    if(content.substr(i, 3) == "<@!"){
-      scan(content, i, oldi, 3);
-    }else if(content.substr(i, 2) == "<@"){
-      scan(content, i, oldi, 2);
+  if(content.length >= 21){
+    unsigned long i;
+    unsigned long oldi;
+    for(i = content.size() - 22, oldi = i + 1; i < oldi; i = std::min(i - 1, content.size() - 22)){
+      if(content.substr(i, 3) == "<@!"){
+	scan(content, i, oldi, 3);
+      }else if(content.substr(i, 2) == "<@"){
+	scan(content, i, oldi, 2);
+      }
+      oldi = i;
     }
-    oldi = i;
   }
   return content;
 }
