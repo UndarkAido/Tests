@@ -1,0 +1,4 @@
+# CMake
+CMake/build*
+CMake/install*
+CMake/*/build/*
