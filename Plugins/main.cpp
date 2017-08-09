@@ -9,7 +9,7 @@ int main() {
     Hub hub;
     hub.installPlugin(new pluginHello());
     hub.installPlugin(new pluginGoodbye());
-    ((pluginHello*)hub.getPlugin("hello"))->sayHello();
-    ((pluginGoodbye*)hub.getPlugin("goodbye"))->sayGoodbye();
+    hub.getPlugin<pluginHello>("hello")->sayHello();
+    hub.getPlugin<pluginGoodbye>("goodbye")->sayGoodbye();
     return 0;
 }
