@@ -4,11 +4,12 @@
 #include <sstream>
 
 #define JSON_USE_IMPLICIT_CONVERSIONS 0
+
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 
-namespace discordpp{
+namespace discordpp {
     using snowflake = uint64_t;
 
     inline snowflake get_snowflake(std::string src) {
@@ -16,31 +17,35 @@ namespace discordpp{
         std::istringstream(src) >> out;
         return out;
     }
+
     inline snowflake get_snowflake(json src) {
         return get_snowflake(src.get<std::string>());
     }
 
-    template <typename T> inline std::string to_string(const T& t) {
+    template<typename T>
+    inline std::string to_string(const T &t) {
         return std::move(std::to_string(t));
     }
 
-    template <> inline std::string to_string<std::string>(const std::string& s) {
+    template<>
+    inline std::string to_string<std::string>(const std::string &s) {
         return s;
     }
 
-    struct Snowflake{
+    struct Snowflake {
         Snowflake(uint64_t value) : _value(value) {}
+
         Snowflake(std::string value) : _value(get_snowflake(value)) {}
 
-        operator uint64_t&(){
+        operator uint64_t &() {
             return _value;
         }
 
-        operator std::string() const{
+        operator std::string() const {
             return to_string(_value);
         }
 
-        Snowflake& operator =(const std::string& str){
+        Snowflake &operator=(const std::string &str) {
             _value = get_snowflake(str);
             return *this;
         }
@@ -51,18 +56,20 @@ namespace discordpp{
 } // namespace discordpp
 
 namespace nlohmann {
-    void to_json(nlohmann::json &j, const discordpp::Snowflake &v) {
-        j = static_cast<std::string>(v);
-    }
-
-    void from_json(const nlohmann::json &j, discordpp::Snowflake &v) {
-        v = j.get<std::string>();
-    }
-}
+    template <>
+    struct adl_serializer<discordpp::Snowflake> {
+        static void to_json(json &j, const discordpp::Snowflake &sf) {
+            j = static_cast<std::string>(sf);
+        }
+        static discordpp::Snowflake from_json(const json& j) {
+            return {j.get<std::string>()};
+        }
+    };
+} // namespace nlohmann
 
 namespace dpp = discordpp;
 
-int main(){
+int main() {
     dpp::Snowflake sf = 56;
     std::string sfs = sf;
     std::cout << sf << std::endl;
