@@ -1,0 +1,3 @@
+[submodule "Cpp/lib/nlohmannjson"]
+	path = Cpp/lib/nlohmannjson
+	url = https://github.com/ArthurSonzogni/nlohmann_json_cmake_fetchcontent.git
